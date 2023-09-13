@@ -26,41 +26,9 @@ services:
       - /usr/src/app/node_modules
     command: npm run start:dev auth # overrides CMD from dockerfile
 
-  presence:
-    build:
-      context: ./
-      dockerfile: ./apps/presence/Dockerfile
-    ports:
-      - '6000:6000'
-    env_file:
-      - .env
-    depends_on:
-      - rabbitmq
-      - postgres
-      - redis
-    volumes:
-      - .:/usr/src/app # any change to base folder should be reflected
-      - /usr/src/app/node_modules
-    command: npm run start:dev presence # overrides CMD from dockerfile
 
-  chat:
-    build:
-      context: ./
-      dockerfile: ./apps/chat/Dockerfile
-    ports:
-      - '7000:7000'
-    env_file:
-      - .env
-    depends_on:
-      - rabbitmq
-      - postgres
-      - redis
-      - presence
-    volumes:
-      - .:/usr/src/app # any change to base folder should be reflected
-      - /usr/src/app/node_modules
-    command: npm run start:dev chat # overrides CMD from dockerfile
 
+ 
   api:
     build:
       context: ./
@@ -72,7 +40,6 @@ services:
     depends_on:
       - rabbitmq
       - auth
-      - presence
     volumes:
       - .:/usr/src/app # any change to base folder should be reflected
       - /usr/src/app/node_modules
@@ -87,11 +54,11 @@ services:
     volumes:
       - ./db/data:/var/lib/postgresql/data
 
-  postgres_admin:
-    image: dpage/pgadmin4
-    depends_on:
-      - postgres
-    env_file:
-      - .env
-    ports:
-      - '15432:80'
+  # postgres_admin:
+  #   image: dpage/pgadmin4
+  #   depends_on:
+  #     - postgres
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - '15432:80'

@@ -25,7 +25,7 @@ import { Roles } from "./role.enum";
     @Column({ select: false })
     password: string;
 
-    @Column({ default: "poweuser" })
+    @Column({ default:Roles.POWERUSER, type: "enum", enum: Roles })
     Roles:Roles
 
   }

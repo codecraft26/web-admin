@@ -10,15 +10,33 @@ import { UserInterceptor } from '@app/shared/interceptors/user.interceptor';
 import { UseGuards } from '@nestjs/common';
 @Controller()
 export class AppController {
-  constructor(@Inject('AUTH_SERVICE') private readonly authService:ClientProxy) {}
+  constructor(
+    
+    @Inject('AUTH_SERVICE') private readonly authService:ClientProxy, 
+  ) {}
 
   @Get('users')
   async getUsers() {
     return this.authService.send(
       {
-        cmd: 'get-users',
+        cmd: 'all-iuser',
       },
       {},
+    );
+  }
+
+  @Get('user/:id')
+  async getUserByID(@Param('id') id: string) {
+    return this.authService.send(
+      {
+        cmd: 'get-user',
+        data: { id },
+      },
+      {
+
+
+      
+      },
     );
   }
 
@@ -58,6 +76,15 @@ export class AppController {
   }
 
 
+  @Get('foo/:id')
+  async getFoo(@Param('id') id: string) {
+    return this.authService.send({
+      cmd: 'get-presence',
+    }, {id});
+    }
 
-}
+  }
+
+
+
 
