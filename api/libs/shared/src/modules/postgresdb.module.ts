@@ -1,19 +1,25 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from '../entities/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('POSTGRES_URI'),
-        autoLoadEntities: true,
-        synchronize: true, // shouldn't be used in production - may lose data
-      }),
-
-      inject: [ConfigService],
-    }),
+    ConfigModule.forRoot(), // Import the ConfigModule
+    
+    TypeOrmModule.forFeature([UserEntity]),
+   TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'niteg',
+      database: 'postgres',
+      synchronize: true,
+      entities: [UserEntity],
+      
+      
+   })
   ],
 })
 export class PostgresDBModule {}

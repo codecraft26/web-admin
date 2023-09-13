@@ -1,4 +1,4 @@
-import { Controller, Get, Inject,UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject,Param,UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SharedService } from '@app/shared';
 import { Ctx, MessagePattern, RmqContext,Payload } from '@nestjs/microservices';
@@ -11,13 +11,13 @@ import { JwtGuard } from './jwt.guard';
 export class AuthController {
   constructor(
     @Inject('AuthServiceInterface') private readonly authService: AuthService,
-    @Inject('SharedServiceInterface') private readonly sharedService: SharedService
+    @Inject('sharedServiceInterface') private readonly sharedService: SharedService
     
     
     ) {}
 
 
-    @MessagePattern('getUsers')
+    @MessagePattern('all-iuser')
     async getUsers(@Ctx() context: RmqContext) {
       this.sharedService.acknowledgeMessage(context);
 
@@ -29,7 +29,7 @@ export class AuthController {
     async getUserById(
       @Ctx() context: RmqContext,
       @Payload() user: { id: number },
-    ) {
+    ): Promise<import("/home/codecraft/Desktop/nest-bhumio-backend/api/libs/shared/src/index").UserEntity> {
       this.sharedService.acknowledgeMessage(context);
   
       return this.authService.getUserById(user.id);
@@ -74,7 +74,12 @@ export class AuthController {
     }
   
 
+    @MessagePattern({ cmd: 'get-presence' })
+    async getFoo(@Ctx() context: RmqContext, @Payload() user: { id: number }) {
+      this.sharedService.acknowledgeMessage(context);
   
+      return { foo:user.id  };
+    }
  
 
 }

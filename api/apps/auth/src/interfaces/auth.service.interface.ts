@@ -18,7 +18,7 @@ export interface AuthServiceInterface {
     }>;
     verifyJwt(jwt: string): Promise<{ user: UserEntity; exp: number }>;
     getUserFromHeader(jwt: string): Promise<UserJwt>;
-
+   
 
 
 }
