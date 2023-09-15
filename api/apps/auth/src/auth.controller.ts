@@ -13,7 +13,6 @@ export class AuthController {
     @Inject('AuthServiceInterface') private readonly authService: AuthService,
     @Inject('sharedServiceInterface') private readonly sharedService: SharedService
     
-    
     ) {}
 
 

@@ -12,7 +12,9 @@ export class AuthService implements AuthServiceInterface {
 
 
 
-  constructor(@Inject('UserRepositoryInterface') private readonly usersRepository: UserRepositoryInterface, private readonly jwtService: JwtService) { }
+  constructor(@Inject('UserRepositoryInterface') private readonly usersRepository: UserRepositoryInterface,
+  
+  private readonly jwtService: JwtService) { }
 
 
 
@@ -55,7 +57,7 @@ export class AuthService implements AuthServiceInterface {
     const existingUser = await this.findByEmail(email);
 
     if (existingUser) {
-      throw new ConflictException('An account with that email already exists!');
+      throw new ConflictException('Email already exists');
     }
 
     const hashedPassword = await this.hashPassword(password);
@@ -65,6 +67,8 @@ export class AuthService implements AuthServiceInterface {
       email: email,
       password: hashedPassword,
     });
+       
+          
 
     delete savedUser.password;
     return savedUser;
@@ -106,6 +110,9 @@ export class AuthService implements AuthServiceInterface {
     delete user.password;
 
     const jwt = await this.jwtService.signAsync({ user });
+
+
+
 
     return { token: jwt, user };
   }

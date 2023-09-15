@@ -9,6 +9,7 @@ import { PostgresDBModule } from '@app/shared/modules/postgresdb.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtGuard } from './jwt.guard';
 import { JwtStrategy } from './jwt-strategy';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 
 @Module({
@@ -26,6 +27,7 @@ import { JwtStrategy } from './jwt-strategy';
 
     SharedModule,
     PostgresDBModule,
+    MailerModule,
 
     TypeOrmModule.forFeature([
       UserEntity,
@@ -50,6 +52,11 @@ import { JwtStrategy } from './jwt-strategy';
       {
         provide:'sharedServiceInterface',
         useClass:SharedService
+      }
+
+      ,{
+        provide:'mailerServiceInterface',
+        useClass:MailerModule
       }
 
 

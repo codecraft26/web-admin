@@ -1,5 +1,5 @@
 import { MailerController } from './mailer.controller';
-import { MailerService } from './mailer.service';
+import { MailerServices } from './mailer.service';
 import { ConfigService ,ConfigModule} from '@nestjs/config';
 import { SharedService,SharedModule } from '@app/shared';
 import { Module } from '@nestjs/common';
@@ -39,7 +39,7 @@ import { MailerModule as NestMailerModule } from '@nestjs-modules/mailer';
   providers: [{
 
     provide:'MailerServiceInterface',
-    useClass:MailerService
+    useClass:MailerServices
   }
 
 
@@ -53,12 +53,13 @@ import { MailerModule as NestMailerModule } from '@nestjs-modules/mailer';
 
   provide:'ConfigServiceInterface',
   useClass:ConfigService
-}
-,MailerService
+},
 
+MailerServices
 
 
 ],
+
 })
 export class MailerModule {
   
