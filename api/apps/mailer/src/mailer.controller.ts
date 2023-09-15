@@ -1,12 +1,19 @@
 import { Controller, Get } from '@nestjs/common';
-import { MailerService } from './mailer.service';
-
+import { MailerServices } from './mailer.service';
+import { MessagePattern,Payload ,Ctx} from '@nestjs/microservices';
+import { RmqContext } from '@nestjs/microservices';
+import { SharedService } from '@app/shared';
 @Controller()
 export class MailerController {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(private readonly mailerService: MailerServices,private readonly sharedService:SharedService) {}
 
-  @Get()
-  getHello(): string {
-    return this.mailerService.getHello();
+  @MessagePattern({ cmd: 'send-mail' })
+  getHello( @Ctx() context: RmqContext,@Payload() user: { email}) {
+       
+
+    this.sharedService.acknowledgeMessage(context);
+
+
+    return this.mailerService.sendEmail(user.email)
   }
 }

@@ -13,6 +13,7 @@ export class AppController {
   constructor(
     
     @Inject('AUTH_SERVICE') private readonly authService:ClientProxy, 
+    @Inject('MAILER_SERVICE') private readonly mailerService:ClientProxy ,
   ) {}
 
   @Get('users')
@@ -47,6 +48,16 @@ export class AppController {
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
+    
+
+
+    this.mailerService
+    .send({
+      cmd: 'send-mail',
+    }, {email})
+    .subscribe((res) => {
+      console.log(res);
+    });
     return this.authService.send(
       {
         cmd: 'register',
@@ -78,8 +89,8 @@ export class AppController {
 
   @Get('foo/:id')
   async getFoo(@Param('id') id: string) {
-    return this.authService.send({
-      cmd: 'get-presence',
+    return this.mailerService.send({
+      cmd: 'send-mail',
     }, {id});
     }
 
