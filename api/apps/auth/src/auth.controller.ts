@@ -5,7 +5,7 @@ import { Ctx, MessagePattern, RmqContext,Payload } from '@nestjs/microservices';
 import { ExistingUserDTO } from './dtos/existing-user.dto';
 import { NewUserDTO } from './dtos/new-user.dto';
 import { JwtGuard } from './jwt.guard';
-
+import { UserEntity } from '@app/shared';
 
 @Controller()
 export class AuthController {
@@ -17,7 +17,7 @@ export class AuthController {
     ) {}
 
 
-    @MessagePattern('all-iuser')
+    @MessagePattern({cmd:'all-user'})
     async getUsers(@Ctx() context: RmqContext) {
       this.sharedService.acknowledgeMessage(context);
 
@@ -29,7 +29,7 @@ export class AuthController {
     async getUserById(
       @Ctx() context: RmqContext,
       @Payload() user: { id: number },
-    ): Promise<import("/home/codecraft/Desktop/nest-bhumio-backend/api/libs/shared/src/index").UserEntity> {
+    ): Promise<UserEntity> {
       this.sharedService.acknowledgeMessage(context);
   
       return this.authService.getUserById(user.id);

@@ -19,7 +19,7 @@ export class AppController {
   async getUsers() {
     return this.authService.send(
       {
-        cmd: 'all-iuser',
+        cmd: 'all-user',
       },
       {},
     );
