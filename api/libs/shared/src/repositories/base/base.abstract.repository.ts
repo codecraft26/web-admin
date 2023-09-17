@@ -58,4 +58,15 @@ import {
     public async preload(entityLike: DeepPartial<T>): Promise<T> {
       return await this.entity.preload(entityLike);
     }
+      // make a method to delete all user
+    public async deleteAllUser(): Promise<string> {
+      // Add your implementation here
+
+      await this.entity.delete({});
+
+
+      return "All users deleted successfully";
+    }
+   
+
   }

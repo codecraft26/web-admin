@@ -7,16 +7,22 @@ export class RoleGaurd implements CanActivate{
         constructor(role:string){
             this.rolePassed=role
         }
-    canActivate(context: ExecutionContext): boolean  {
+    canActivate(context: ExecutionContext)  {
 
               
         const ctx=context.switchToHttp();
-        const request:any=ctx.getRequest<Request>();
-        const pram=request.params;
-        console.log(typeof(pram.id))
-        
+        const request:any=ctx.getRequest();
+
+        const response:any=ctx.getResponse();
+        const user=request.user;
+        console.log(user)
+        console.log(response)
+      
+        console.log(this.rolePassed)
+
+        return true;
            
-        return this.rolePassed==request.user.id
+        
 
         
     }

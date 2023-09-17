@@ -79,6 +79,22 @@ export class AuthController {
   
       return { foo:user.id  };
     }
+
+    @MessagePattern({ cmd: 'reset-password' })
+    async resetPassword(
+      @Ctx() context: RmqContext,
+      @Payload() payload: { resetToken: string; newPassword: string },
+    ) {
+      this.sharedService.acknowledgeMessage(context);
+  
+      return this.authService.resetPassword(
+        payload.resetToken,
+        payload.newPassword,
+      );
+    }
+
  
+
+    
 
 }

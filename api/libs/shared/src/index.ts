@@ -13,3 +13,6 @@ export * from './repositories/base/base.abstract.repository';
 export * from './repositories/base/base.interface.repository';
 
 export * from './interceptors/user.interceptor';
+export * from './entities/role.enum';
+
+export * from './middleware/check.middleware'
