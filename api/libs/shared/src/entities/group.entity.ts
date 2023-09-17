@@ -1,8 +1,8 @@
 import { Entity ,PrimaryGeneratedColumn,Column,ManyToMany,ManyToOne,JoinTable} from "typeorm";
 import { UserEntity } from "./user.entity";
 
-@Entity('group')
-export class Group {
+@Entity('Group')
+export class GroupEntity {
 
 
     @PrimaryGeneratedColumn()

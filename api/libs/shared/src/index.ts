@@ -16,3 +16,4 @@ export * from './interceptors/user.interceptor';
 export * from './entities/role.enum';
 
 export * from './middleware/check.middleware'
+export * from "./entities/group.entity"

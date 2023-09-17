@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtGuard } from './jwt.guard';
 import { JwtStrategy } from './jwt-strategy';
 import { MailerModule } from '@nestjs-modules/mailer';
+import {  GroupEntity } from '@app/shared/entities/group.entity';
 
 
 @Module({
@@ -31,7 +32,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 
     TypeOrmModule.forFeature([
       UserEntity,
-      
+      GroupEntity
     ]),
 
 
@@ -57,6 +58,10 @@ import { MailerModule } from '@nestjs-modules/mailer';
       ,{
         provide:'mailerServiceInterface',
         useClass:MailerModule
+      },
+      {
+        provide:'GroupServiceInterface',
+        useClass:SharedService
       }
 
 
