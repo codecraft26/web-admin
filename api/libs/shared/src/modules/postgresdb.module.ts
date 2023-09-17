@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
+import { GroupEntity } from '../entities/group.entity';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { UserEntity } from '../entities/user.entity';
       password: 'niteg',
       database: 'postgres',
       synchronize: true,
-      entities: [UserEntity],
+      entities: [UserEntity,GroupEntity],
       
       
    })
