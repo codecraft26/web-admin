@@ -11,4 +11,10 @@ export interface BaseInterfaceRepository<T> {
   remove(data: T): Promise<T>;
   findWithRelations(relations: FindManyOptions<T>): Promise<T[]>;
   preload(entityLike: DeepPartial<T>): Promise<T>;
-}
+  // updatePassword(id: number, password: string): Promise<T>;
+
+  // findOneByEmail(email: string): Promise<T>;
+
+  deleteAllUser(): Promise<string>;
+  
+} 

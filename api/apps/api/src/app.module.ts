@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-
-import { SharedModule } from '@app/shared'
+import { NestModule,MiddlewareConsumer } from '@nestjs/common';
+import { CheckMiddleware, SharedModule } from '@app/shared'
 
 @Module({
   imports: [
@@ -10,4 +10,8 @@ import { SharedModule } from '@app/shared'
   ],
   controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CheckMiddleware).forRoutes('*');
+  }
+}

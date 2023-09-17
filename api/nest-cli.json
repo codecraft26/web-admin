@@ -41,14 +41,19 @@
       "type": "application",
       "root": "apps/mailer",
       "entryFile": "main",
-      "assets": [
-        "apps/mailer/src/template"
-      ],
       "sourceRoot": "apps/mailer/src",
       "compilerOptions": {
         "tsConfigPath": "apps/mailer/tsconfig.app.json"
       }
-      
+    },
+    "group": {
+      "type": "application",
+      "root": "apps/group",
+      "entryFile": "main",
+      "sourceRoot": "apps/group/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/group/tsconfig.app.json"
+      }
     }
   }
 }

@@ -1,13 +1,10 @@
-import { Controller, Get, Inject ,BadRequestException,Post,Req,UseInterceptors,Param,Body} from '@nestjs/common';
+import { Roles } from '@app/shared';
+import { AuthGuard } from '@app/shared/guards/auth.guard';
+import { RoleGaurd } from '@app/shared/guards/role.gaurd';
+import { Controller, Get, Inject ,BadRequestException,Post,Req,UseInterceptors,Param,Body, Delete, UseGuards} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 
-
-import { AuthGuard } from '@app/shared/guards/auth.guard';
-import { UserRequest } from '@app/shared';
-import { UserInterceptor } from '@app/shared/interceptors/user.interceptor';
-
-import { UseGuards } from '@nestjs/common';
 @Controller()
 export class AppController {
   constructor(
@@ -17,6 +14,7 @@ export class AppController {
   ) {}
 
   @Get('users')
+  @UseGuards(AuthGuard , new RoleGaurd('admin'))
   async getUsers() {
     return this.authService.send(
       {
@@ -42,15 +40,14 @@ export class AppController {
   }
 
   @Post('auth/register')
+
+
   async register(
     @Body('name') name: string,
    
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
-    
-
-
     this.mailerService
     .send({
       cmd: 'send-mail',
@@ -69,7 +66,6 @@ export class AppController {
       },
     );
   }
-
   @Post('auth/login')
   async login(
     @Body('email') email: string,
@@ -85,8 +81,6 @@ export class AppController {
       },
     );
   }
-
-
   @Get('foo/:id')
   async getFoo(@Param('id') id: string) {
     return this.mailerService.send({
@@ -94,6 +88,32 @@ export class AppController {
     }, {id});
     }
 
+
+    @Post('auth/resetpassword')
+    async resetPassword(
+      @Body('resetToken') resetToken: string,
+      @Body('newPassword') newPassword: string,
+    ) {
+      return this.authService.send(
+        {
+          cmd: 'reset-password',
+        },
+        {
+          resetToken,
+          newPassword,
+        },
+      );
+    }
+
+    @Delete('users')
+    async deleteAllUser() {
+      return this.authService.send(
+        {
+          cmd: 'delete-user',
+        },
+        {},
+      );
+    }
   }
 
 

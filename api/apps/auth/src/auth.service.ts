@@ -66,6 +66,8 @@ export class AuthService implements AuthServiceInterface {
       Name: name,
       email: email,
       password: hashedPassword,
+
+
     });
        
           
@@ -140,7 +142,38 @@ export class AuthService implements AuthServiceInterface {
       throw new BadRequestException();
     }
   }
- 
 
+
+  
+  async resetPassword(resetToken: string, newPassword: string): Promise<void> {
+    
+    
+
+    
+    
+    try {
+      const { user, exp } = await this.jwtService.verifyAsync(resetToken);
+      if (exp < Date.now()) {
+        throw new UnauthorizedException('Reset token has expired');
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      await this.updatePassword(user.id, hashedPassword);
+    } catch (error) {
+      throw new UnauthorizedException('Invalid reset token');
+    }
+  }
+
+
+
+  //method to update password and after reset token will be deleted
+  async updatePassword(id: number, password: string): Promise<UserEntity> {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await this.usersRepository.findOneById(id);
+    user.password = hashedPassword;
+    return this.usersRepository.save(user);
+  }
+
+ 
 
 }

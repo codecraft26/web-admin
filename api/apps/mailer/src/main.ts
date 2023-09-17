@@ -11,5 +11,6 @@ async function bootstrap() {
   const queue = configService.get('RABBITMQ_MAILER_QUEUE');
   app.connectMicroservice(sharedService.getRmqOptions(queue));
   app.startAllMicroservices();
+  await app.listen(3001);
 }
 bootstrap();
