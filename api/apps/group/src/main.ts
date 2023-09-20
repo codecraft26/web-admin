@@ -1,9 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { GroupModule } from './group.module';
 import { ConfigService } from '@nestjs/config';
+import { GroupModule } from './group.module';
 import { SharedService } from '@app/shared';
+
 async function bootstrap() {
   const app = await NestFactory.create(GroupModule);
+
 
   const configService = app.get(ConfigService);
   const sharedService = app.get(SharedService);
@@ -13,6 +15,6 @@ async function bootstrap() {
   app.connectMicroservice(sharedService.getRmqOptions(queue));
   app.startAllMicroservices();
 
-   await app.listen(4000);
+
 }
 bootstrap();
