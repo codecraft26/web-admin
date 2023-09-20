@@ -1,20 +1,19 @@
-import { Group } from "../entities/group.entity";
-import { GroupRepositoryInterface } from "../interfaces/groups.repository.interface";
 import { BaseAbstractRepository } from "./base/base.abstract.repository";
-
+import {GroupRepositoryInterface} from '../interfaces/group.repository.intrface'
 import { InjectRepository } from "@nestjs/typeorm";
 import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
+import { GroupEntity } from "../entities/group.entity";
 
 
 
 @Injectable()
 export class UsersRepository
-  extends BaseAbstractRepository<Group>
+  extends BaseAbstractRepository<GroupEntity>
   implements GroupRepositoryInterface {
   constructor(
-    @InjectRepository(Group)
-    private readonly GroupRepository: Repository<Group>,
+    @InjectRepository(GroupEntity)
+    private readonly GroupRepository: Repository<GroupEntity>,
   ) {
     super(GroupRepository);
   }

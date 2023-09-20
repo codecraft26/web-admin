@@ -9,5 +9,4 @@ export class GroupController {
   getHello(): string {
     return this.groupService.getHello();
   }
-  
 }
