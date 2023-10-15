@@ -6,6 +6,6 @@ import { Group } from "../entities/group.entity";
 
 EntityRepository(Group)
 
-export class UserRepository extends Repository<User>{
+export class UserRepository extends Repository<Group>{
     
 }

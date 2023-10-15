@@ -1,8 +1,7 @@
-import { Roles } from '@app/shared';
-import { AuthGuard } from '@app/shared/guards/auth.guard';
-import { RoleGaurd } from '@app/shared/guards/role.gaurd';
+
 import { Controller, Get, Inject ,BadRequestException,Post,Req,UseInterceptors,Param,Body, Delete, UseGuards} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { get } from 'http';
 
 
 @Controller()
@@ -13,8 +12,15 @@ export class AppController {
     @Inject('MAILER_SERVICE') private readonly mailerService:ClientProxy ,
   ) {}
 
+
+
+
+
+
+
+
+
   @Get('users')
-  // @UseGuards(AuthGuard , new RoleGaurd('admin'))
   async getUsers() {
     return this.authService.send(
       {
@@ -23,6 +29,19 @@ export class AppController {
       {},
     );
   }
+
+  @Get('test')
+  async getTest() {
+    return this.authService.send(
+      {
+        cmd: 'test',
+      },
+      {},
+    );
+  }
+
+
+ 
 
   @Get('user/:id')
   async getUserByID(@Param('id') id: string) {

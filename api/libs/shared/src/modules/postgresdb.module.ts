@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '../entities/user.entity';
-import { GroupEntity } from '../entities/group.entity';
+import { User} from '../entities/user.entity';
+import { Group } from '../entities/group.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot(), // Import the ConfigModule
     
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([User,Group]),
    TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -17,7 +17,7 @@ import { GroupEntity } from '../entities/group.entity';
       password: 'niteg',
       database: 'postgres',
       synchronize: true,
-      entities: [UserEntity,GroupEntity],
+      entities: ['dist/**/*.entity{.ts,.js}'],
       
       
    })

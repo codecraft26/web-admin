@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SharedService, User,Group } from '@app/shared';
+import { SharedService, User,Group, UserRepository } from '@app/shared';
 import { ConfigService,ConfigModule } from '@nestjs/config';
 import { SharedModule } from '@app/shared';
 import { PostgresDBModule } from '@app/shared/modules/postgresdb.module';
@@ -47,7 +47,12 @@ import { PassportModule } from '@nestjs/passport';
         provide:'AuthServiceInterface',
         useClass:AuthService
       },
-      
+      {
+        provide:'userRepoInterface',
+        useClass:UserRepository
+      }
+      ,
+    
       {
         provide:'sharedServiceInterface',
         useClass:SharedService

@@ -1,10 +1,10 @@
-import {  Injectable, ConflictException, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {  Injectable, ConflictException, UnauthorizedException, BadRequestException, Inject } from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
 import { NewUserDTO } from './dtos/new-user.dto';
-import { User, UserJwt } from '@app/shared';
+import { User, UserJwt, UserRepository } from '@app/shared';
 import { ExistingUserDTO } from './dtos/existing-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectRepository, getCustomRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -13,8 +13,9 @@ export class AuthService {
 
 
   constructor(
-    @InjectRepository(User) private readonly userRepository:Repository<User>,
-    private jwtService:JwtService
+    
+@Inject('userRepoInterface') private readonly userRepository:UserRepository
+,    private jwtService:JwtService
     
     ){
     
@@ -53,7 +54,7 @@ export class AuthService {
   async register(newUser: Readonly<NewUserDTO>): Promise<User> {
     const { name, email, password } = newUser;
 
-    const existingUser = await this.findByEmail(email);
+    const existingUser = await this.userRepository
 
     if (existingUser) {
       throw new ConflictException('Email already exists');
