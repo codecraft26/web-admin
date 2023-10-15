@@ -11,8 +11,6 @@ import { CheckMiddleware, SharedModule } from '@app/shared'
   ],
   controllers: [AppController],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CheckMiddleware).forRoutes('*');
-  }
+export class AppModule {
+ 
 }

@@ -4,8 +4,6 @@ import { SharedService } from '@app/shared';
 import { Ctx, MessagePattern, RmqContext,Payload } from '@nestjs/microservices';
 import { ExistingUserDTO } from './dtos/existing-user.dto';
 import { NewUserDTO } from './dtos/new-user.dto';
-import { JwtGuard } from './jwt.guard';
-import { UserEntity } from '@app/shared';
 
 @Controller()
 export class AuthController {
@@ -20,7 +18,7 @@ export class AuthController {
     async getUsers(@Ctx() context: RmqContext) {
       this.sharedService.acknowledgeMessage(context);
 
-      return this.authService.getUsers();
+      return this.authService.getUsers;
     }
 
 
@@ -28,7 +26,7 @@ export class AuthController {
     async getUserById(
       @Ctx() context: RmqContext,
       @Payload() user: { id: number },
-    ): Promise<UserEntity> {
+    ){
       this.sharedService.acknowledgeMessage(context);
   
       return this.authService.getUserById(user.id);
@@ -52,7 +50,6 @@ export class AuthController {
     }
   
     @MessagePattern({ cmd: 'verify-jwt' })
-    @UseGuards(JwtGuard)
     async verifyJwt(
       @Ctx() context: RmqContext,
       @Payload() payload: { jwt: string },
@@ -71,6 +68,13 @@ export class AuthController {
   
       return this.authService.getUserFromHeader(payload.jwt);
     }
+
+    @MessagePattern({ cmd: 'test' })
+    async getTest(@Ctx() context: RmqContext) {
+      this.sharedService.acknowledgeMessage(context);
+  
+      return "heloo";
+    }
   
 
     @MessagePattern({ cmd: 'get-presence' })
@@ -78,19 +82,6 @@ export class AuthController {
       this.sharedService.acknowledgeMessage(context);
   
       return { foo:user.id  };
-    }
-
-    @MessagePattern({ cmd: 'reset-password' })
-    async resetPassword(
-      @Ctx() context: RmqContext,
-      @Payload() payload: { resetToken: string; newPassword: string },
-    ) {
-      this.sharedService.acknowledgeMessage(context);
-  
-      return this.authService.resetPassword(
-        payload.resetToken,
-        payload.newPassword,
-      );
     }
 
  

@@ -13,13 +13,7 @@ console.log(headers)
 console.log(`Request Headers: ${JSON.stringify(headers)}`);
 console.log(`Request Headers: ${JSON.stringify(body)}`);
   // 
-  passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-    req.body.user = user; // Attach the user object to the request
-    next();
-  })(req, res, next);
+
 
 }
 }
