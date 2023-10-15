@@ -1,8 +1,8 @@
 import { Entity ,PrimaryGeneratedColumn,Column,ManyToMany,ManyToOne,JoinTable} from "typeorm";
-import { UserEntity } from "./user.entity";
+import { User} from "./user.entity";
 
 @Entity('Group')
-export class GroupEntity {
+export class Group{
 
 
     @PrimaryGeneratedColumn()
@@ -11,11 +11,11 @@ export class GroupEntity {
     @Column()
     name: string;
   
-    @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' }) // Admin of the group
-    admin: UserEntity;
+    @ManyToOne(() => User, { onDelete: 'CASCADE' }) // Admin of the group
+    admin: User;
   
-    @ManyToMany(() => UserEntity, { cascade: true }) // Members of the group
+    @ManyToMany(() => User, { cascade: true }) // Members of the group
     @JoinTable()
-    members: UserEntity[];
+    members: User[];
         
     }   

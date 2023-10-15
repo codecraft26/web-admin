@@ -4,7 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable
 } from 'typeorm';
-import {  GroupEntity } from "./group.entity";
+import {  Group } from "./group.entity";
 
 
 
@@ -12,7 +12,7 @@ import { Roles } from "./role.enum";
 
 
 @Entity('user')
-export class UserEntity {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -28,8 +28,8 @@ export class UserEntity {
 
   @Column({ default: Roles.ADMIN, type: "enum", enum: Roles })
   Roles: Roles
-  @ManyToMany(() => GroupEntity,(group)=>group.id, { cascade: true })
+  @ManyToMany(() => Group,(group)=>group.id, { cascade: true })
   @JoinTable()
-  groups: GroupEntity[];
+  groups: Group[];
 
 }
