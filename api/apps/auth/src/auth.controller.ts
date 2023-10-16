@@ -20,6 +20,18 @@ export class AuthController {
 
       return this.authService.getUsers;
     }
+    @MessagePattern({ cmd: 'find-email' })
+    async findByEmail(
+      @Ctx() context: RmqContext,
+      @Payload() payload: { email: string },
+    ) {
+      this.sharedService.acknowledgeMessage(context);
+  
+      return this.authService.findByEmail(payload.email);
+    }
+
+   
+
 
 
     @MessagePattern({ cmd: 'get-user' })

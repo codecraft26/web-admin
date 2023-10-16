@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Group, User } from "@app/shared";
 import { Repository } from "typeorm";
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy){
+export class JwtStrategy extends PassportStrategy(Strategy) {
  
   constructor(
     @InjectRepository(User)
@@ -16,6 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy){
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 
     });
+    
   }
 
 

@@ -3,7 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SharedService, User,Group, UserRepository } from '@app/shared';
-import { ConfigService,ConfigModule } from '@nestjs/config';
+import { ConfigService} from '@nestjs/config';
 import { SharedModule } from '@app/shared';
 import { PostgresDBModule } from '@app/shared/modules/postgresdb.module';
 import { JwtModule } from '@nestjs/jwt';
@@ -22,7 +22,7 @@ import { PassportModule } from '@nestjs/passport';
         return {
           secret: config.get<string>('JWT_SECRET'),
           signOptions: {
-            expiresIn: config.get<string | number>('JWT_EXPIRES'),
+            expiresIn:1090000,
           },
         };
       },
@@ -36,6 +36,7 @@ import { PassportModule } from '@nestjs/passport';
       User,
       Group
     ]),
+  
 
 
   ],
@@ -43,6 +44,7 @@ import { PassportModule } from '@nestjs/passport';
   providers: [
 
       JwtStrategy,
+      PassportModule,
       {
         provide:'AuthServiceInterface',
         useClass:AuthService
