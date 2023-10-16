@@ -1,9 +1,7 @@
 
 import { Controller, Get, Inject ,BadRequestException,Post,Req,UseInterceptors,Param,Body, Delete, UseGuards} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { get } from 'http';
-
-
+import { AuthGuard } from '@nestjs/passport';
 @Controller()
 export class AppController {
   constructor(
@@ -131,6 +129,33 @@ export class AppController {
           cmd: 'delete-user',
         },
         {},
+      );
+    }
+
+
+    @Get('users/:email')
+    async getUserByEmail(@Param('email') email: string) {
+      return this.authService.send(
+        {
+          cmd: 'find-email',
+          data: email ,
+        },
+        {},
+      );
+    }
+
+
+    @Get('test/:email')
+
+   @UseGuards(AuthGuard('jwt'))
+
+
+    async getTest1(@Param('email') email: string) {
+      return this.authService.send(
+        {
+          cmd: 'find-email',
+        },
+        {data:email},
       );
     }
   }

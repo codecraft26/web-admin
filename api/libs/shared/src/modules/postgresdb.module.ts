@@ -17,7 +17,7 @@ import { Group } from '../entities/group.entity';
       password: 'niteg',
       database: 'postgres',
       synchronize: true,
-      entities: ['dist/**/*.entity{.ts,.js}'],
+      entities: [User,Group],
       
       
    })

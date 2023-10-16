@@ -14,7 +14,8 @@ export class AuthService {
 
   constructor(
     
-@Inject('userRepoInterface') private readonly userRepository:UserRepository
+@InjectRepository(User)
+private readonly userRepository:Repository<User>
 ,    private jwtService:JwtService
     
     ){
@@ -31,6 +32,10 @@ export class AuthService {
    
   }
 
+  async findAllUsers(): Promise<User[]> {
+    return this.userRepository.find(); // Use the `find` method to fetch all users from the User entity.
+  }
+
   async getUserById(id: number): Promise<User> {
     const user=await this.userRepository.findOne({where:{id:id}})
     return user;
@@ -38,12 +43,20 @@ export class AuthService {
   }
 
 
-  async findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string):Promise<User>{
     const user=await this.userRepository.findOne({where:{email:email}})
-    return user;
+
+    //map the user
+    return  user;
+
+
 
 
   }
+
+
+
+
 
 
   
@@ -54,7 +67,9 @@ export class AuthService {
   async register(newUser: Readonly<NewUserDTO>): Promise<User> {
     const { name, email, password } = newUser;
 
-    const existingUser = await this.userRepository
+    const existingUser = await this.userRepository.findOne({
+      where: { email },
+    });
 
     if (existingUser) {
       throw new ConflictException('Email already exists');
@@ -72,7 +87,6 @@ export class AuthService {
        
           
 
-    // delete savedUser.password;
     return savedUser;
   }
 
@@ -101,10 +115,11 @@ export class AuthService {
     return user;
   }
 
+
   async login(existingUser: ExistingUserDTO) {
     const { email, password } = existingUser;
     const user1 = await this.validateUser(email, password);
-
+      console.log(user1)
     if (!user1) {
       throw new UnauthorizedException();
     }
@@ -177,6 +192,9 @@ export class AuthService {
     user.password =password;
     return this.userRepository.save(user);
   }
+
+ 
+
 
  
 

@@ -13,6 +13,9 @@ import { Roles } from "./role.enum";
 
 @Entity('user')
 export class User {
+  map(arg0: (user: any) => { id: any; name: any; email: any; password: any; }) {
+    throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -23,7 +26,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column({ default: Roles.ADMIN, type: "enum", enum: Roles })
