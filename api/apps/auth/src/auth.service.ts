@@ -118,15 +118,15 @@ private readonly userRepository:Repository<User>
 
   async login(existingUser: ExistingUserDTO) {
     const { email, password } = existingUser;
-    const user1 = await this.validateUser(email, password);
-      console.log(user1)
-    if (!user1) {
+    const user = await this.validateUser(email, password);
+      console.log(user)
+    if (!user) {
       throw new UnauthorizedException();
     }
     // delete user1.password;
 
     // const jwt = await this.jwtService.signAsync({ user });
-    const jwt =await this.jwtService.signAsync({user1})
+    const jwt =await this.jwtService.signAsync({user})
 
 
 
@@ -135,7 +135,7 @@ private readonly userRepository:Repository<User>
 
 
 
-    return { token: jwt, user1 };
+    return { token: jwt, user };
   }
 
 

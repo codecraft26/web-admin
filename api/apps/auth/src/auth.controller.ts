@@ -5,11 +5,13 @@ import { Ctx, MessagePattern, RmqContext,Payload } from '@nestjs/microservices';
 import { ExistingUserDTO } from './dtos/existing-user.dto';
 import { NewUserDTO } from './dtos/new-user.dto';
 
+import { JwtAuthGuard } from './jwt.guard';
 @Controller()
 export class AuthController {
   constructor(
     @Inject('AuthServiceInterface') private readonly authService: AuthService,
     @Inject('sharedServiceInterface') private readonly sharedService: SharedService
+    
     
     ) {}
 
@@ -29,10 +31,6 @@ export class AuthController {
   
       return this.authService.findByEmail(payload.email);
     }
-
-   
-
-
 
     @MessagePattern({ cmd: 'get-user' })
     async getUserById(

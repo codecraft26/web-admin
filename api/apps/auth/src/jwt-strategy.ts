@@ -2,17 +2,23 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import {Strategy, ExtractJwt} from 'passport-jwt'
 import { InjectRepository } from '@nestjs/typeorm';
-import { Group, User } from "@app/shared";
+import {  User } from "@app/shared";
 import { Repository } from "typeorm";
+import { ConfigService } from "@nestjs/config";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
  
   constructor(
     @InjectRepository(User)
-    private readonly groupRepository:Repository<User>
+  
+    private readonly groupRepository:Repository<User>,
+    private configService: ConfigService,
+
   ){
     super({
-      secretOrKey:35355,
+
+    
+    secretOrKey:configService.get('JWT_SECRET'),
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 
     });
@@ -24,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const {id}=payload
     const user=await this.groupRepository.findOne({where:{id:id}})
     if(!user){
-      throw new UnauthorizedException("Login to access first")
+     console.log('user not found')
     }
     return user;
 

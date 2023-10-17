@@ -10,17 +10,19 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt-strategy';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PassportModule } from '@nestjs/passport';
-
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './jwt.guard';
 
 @Module({
   imports: [
 
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
           secret: config.get<string>('JWT_SECRET'),
+          global: true,
           signOptions: {
             expiresIn:1090000,
           },
@@ -44,8 +46,8 @@ import { PassportModule } from '@nestjs/passport';
   providers: [
 
       JwtStrategy,
-      PassportModule,
-      {
+      
+     {
         provide:'AuthServiceInterface',
         useClass:AuthService
       },
@@ -71,7 +73,6 @@ import { PassportModule } from '@nestjs/passport';
 
 
 
-  ],
-  exports:[JwtStrategy,PassportModule]
+  ]
 })
 export class AuthModule {}
