@@ -1,8 +1,8 @@
 
-import { Controller, Get, Inject ,BadRequestException,Post,Req,UseInterceptors,Param,Body, Delete, UseGuards} from '@nestjs/common';
+import { Controller, Get, Inject ,Post,Req,UseInterceptors,Param,Body, Delete, UseGuards} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { AuthGuard } from '@nestjs/passport';
-@Controller()
+import { JwtAuthGuard } from 'apps/auth/src/jwt.guard';
+@Controller('auth')
 export class AppController {
   constructor(
     
@@ -146,10 +146,12 @@ export class AppController {
 
 
     @Get('test/:email')
-
-   @UseGuards(AuthGuard('jwt'))
-
-
+    @UseGuards(JwtAuthGuard)
+    
+   
+   
+    
+   
     async getTest1(@Param('email') email: string) {
       return this.authService.send(
         {
