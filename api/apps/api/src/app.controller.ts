@@ -146,10 +146,11 @@ export class AppController {
 
 
     @Get('test/:email')
+
     @UseGuards(AuthGuard, new RoleGaurd(['user']))
 
     @UseInterceptors(UserInterceptor)
-  
+
     async getTest1(@Param('email') email: string) {
       return this.authService.send(
         {
