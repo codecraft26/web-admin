@@ -8,7 +8,8 @@ import { SharedModule } from '@app/shared';
 import { PostgresDBModule } from '@app/shared/modules/postgresdb.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { MailerModule } from '@nestjs-modules/mailer';
-
+import { JwtGuard } from './jwt.guard';
+import { JwtStrategy} from './jwt-strategy';
 @Module({
   imports: [
 
@@ -43,7 +44,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 
 
       
-    
+    JwtGuard,
+    JwtStrategy,
       {
         provide:'AuthServiceInterface',
         useClass:AuthService
@@ -67,8 +69,6 @@ import { MailerModule } from '@nestjs-modules/mailer';
         provide:'GroupServiceInterface',
         useClass:SharedService
       },
-
-
   ]
 
 

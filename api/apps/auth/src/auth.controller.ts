@@ -4,13 +4,18 @@ import { SharedService } from '@app/shared';
 import { Ctx, MessagePattern, RmqContext,Payload } from '@nestjs/microservices';
 import { ExistingUserDTO } from './dtos/existing-user.dto';
 import { NewUserDTO } from './dtos/new-user.dto';
+import { JwtGuard } from './jwt.guard';
+import { MailerModule } from 'apps/mailer/src/mailer.module';
+import { MailerService } from '@nestjs-modules/mailer';
 
-import { JwtAuthGuard } from './jwt.guard';
+
+
 @Controller()
 export class AuthController {
   constructor(
     @Inject('AuthServiceInterface') private readonly authService: AuthService,
-    @Inject('sharedServiceInterface') private readonly sharedService: SharedService
+    @Inject('sharedServiceInterface') private readonly sharedService: SharedService,
+    
     
     
     ) {}
@@ -45,6 +50,12 @@ export class AuthController {
     @MessagePattern({ cmd: 'register' })
     async register(@Ctx() context: RmqContext, @Payload() newUser: NewUserDTO) {
       this.sharedService.acknowledgeMessage(context);
+
+      // write code for send email
+    
+
+
+
   
       return this.authService.register(newUser);
     }
@@ -60,6 +71,7 @@ export class AuthController {
     }
   
     @MessagePattern({ cmd: 'verify-jwt' })
+    @UseGuards(JwtGuard)
     async verifyJwt(
       @Ctx() context: RmqContext,
       @Payload() payload: { jwt: string },
@@ -68,16 +80,19 @@ export class AuthController {
   
       return this.authService.verifyJwt(payload.jwt);
     }
-  
+
+
     @MessagePattern({ cmd: 'decode-jwt' })
-    async decodeJwt(
-      @Ctx() context: RmqContext,
-      @Payload() payload: { jwt: string },
-    ) {
-      this.sharedService.acknowledgeMessage(context);
-  
-      return this.authService.getUserFromHeader(payload.jwt);
-    }
+  async decodeJwt(
+    @Ctx() context: RmqContext,
+    @Payload() payload: { jwt: string },
+  ) {
+    this.sharedService.acknowledgeMessage(context);
+
+    return this.authService.getUserFromHeader(payload.jwt);
+  }
+
+
 
     @MessagePattern({ cmd: 'test' })
     async getTest(@Ctx() context: RmqContext) {

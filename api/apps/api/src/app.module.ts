@@ -1,7 +1,6 @@
 import { Module,MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { SharedModule } from '@app/shared'
-import { JwtMiddleware } from 'apps/auth/src/jwt.middleware';
+import { CheckMiddleware, SharedModule } from '@app/shared'
 
 
 @Module({
@@ -19,7 +18,11 @@ import { JwtMiddleware } from 'apps/auth/src/jwt.middleware';
 export class AppModule {
 
 
- 
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(CheckMiddleware)
+  //     .forRoutes('*');
+  // }
   
 
  
