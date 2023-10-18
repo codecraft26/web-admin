@@ -146,7 +146,7 @@ export class AppController {
 
 
     @Get('test/:email')
-    @UseGuards(JwtAuthGuard)
+
     
    
    
