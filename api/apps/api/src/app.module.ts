@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module,MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { SharedModule } from '@app/shared'
+import { JwtMiddleware } from 'apps/auth/src/jwt.middleware';
 
 
 @Module({
@@ -11,9 +12,15 @@ import { SharedModule } from '@app/shared'
     SharedModule.registerRmq('GROUP_SERVICE', process.env.RABBITMQ_GROUP_QUEUE),
   ],
   controllers: [AppController],
-  providers: [],
+
+
 
 })
 export class AppModule {
+
+
+ 
+  
+
  
 }

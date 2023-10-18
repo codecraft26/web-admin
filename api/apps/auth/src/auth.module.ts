@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module ,MiddlewareConsumer } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -6,12 +6,8 @@ import { SharedService, User,Group, UserRepository } from '@app/shared';
 import { ConfigService} from '@nestjs/config';
 import { SharedModule } from '@app/shared';
 import { PostgresDBModule } from '@app/shared/modules/postgresdb.module';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt-strategy';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { PassportModule } from '@nestjs/passport';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './jwt.guard';
 
 @Module({
   imports: [
@@ -45,9 +41,10 @@ import { JwtAuthGuard } from './jwt.guard';
   controllers: [AuthController],
   providers: [
 
-      JwtStrategy,
+
       
-     {
+    
+      {
         provide:'AuthServiceInterface',
         useClass:AuthService
       },
@@ -69,10 +66,15 @@ import { JwtAuthGuard } from './jwt.guard';
       {
         provide:'GroupServiceInterface',
         useClass:SharedService
-      }
-
+      },
 
 
   ]
+
+
+  
 })
-export class AuthModule {}
+export class AuthModule {
+
+ 
+}
