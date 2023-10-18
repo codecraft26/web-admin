@@ -18,19 +18,12 @@ export class AuthService {
 private readonly userRepository:Repository<User>
 ,    private jwtService:JwtService
     
-    ){
-    
-  }
-  
-
-
-
+    ){}
 
   async getUsers(): Promise<User[]> {
     const users = await this.userRepository.find();
     return users;
-   
-  }
+              }
 
   async findAllUsers(): Promise<User[]> {
     return this.userRepository.find(); // Use the `find` method to fetch all users from the User entity.
@@ -46,23 +39,11 @@ private readonly userRepository:Repository<User>
   async findByEmail(email: string):Promise<User>{
     const user=await this.userRepository.findOne({where:{email:email}})
 
-    //map the user
+    if(!user){
+      throw new BadRequestException("User not found")
+    }
     return  user;
-
-
-
-
   }
-
-
-
-
-
-
-  
-
-
- 
 
   async register(newUser: Readonly<NewUserDTO>): Promise<User> {
     const { name, email, password } = newUser;
@@ -74,21 +55,14 @@ private readonly userRepository:Repository<User>
     if (existingUser) {
       throw new ConflictException('Email already exists');
     }
-
-    
-
     const savedUser = await this.userRepository.save({
       Name: name,
       email: email,
       password:password
-
-
     });
-       
-          
-
     return savedUser;
   }
+
 
 
   async doesPasswordMatch(
@@ -97,6 +71,8 @@ private readonly userRepository:Repository<User>
   ): Promise<boolean> {
     return password===hashedPassword;
   }
+
+
 
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.findByEmail(email);
@@ -116,6 +92,8 @@ private readonly userRepository:Repository<User>
   }
 
 
+
+
   async login(existingUser: ExistingUserDTO) {
     const { email, password } = existingUser;
     const user = await this.validateUser(email, password);
@@ -123,18 +101,8 @@ private readonly userRepository:Repository<User>
     if (!user) {
       throw new UnauthorizedException();
     }
-    // delete user1.password;
 
-    // const jwt = await this.jwtService.signAsync({ user });
-    const jwt =await this.jwtService.signAsync({user})
-
-
-
-
-
-
-
-
+    const jwt =await this.jwtService.signAsync({user});
     return { token: jwt, user };
   }
 
@@ -163,39 +131,11 @@ private readonly userRepository:Repository<User>
   }
 
 
-  
-  // async resetPassword(resetToken: string, newPassword: string): Promise<void> {
-    
-    
-
-    
-    
-  //   try {
-  //     const { user, exp } = await this.jwtService.verifyAsync(resetToken);
-  //     if (exp < Date.now()) {
-  //       throw new UnauthorizedException('Reset token has expired');
-  //     }
-
-  //     const hashedPassword = await bcrypt.hash(newPassword, 10);
-  //     await this.updatePassword(user.id, hashedPassword);
-  //   } catch (error) {
-  //     throw new UnauthorizedException('Invalid reset token');
-  //   }
-  // }
 
 
-
-  //method to update password and after reset token will be deleted
   async updatePassword(id: number, password: string): Promise<User> {
-    // const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await this.userRepository.findOneById(id);
+    const user = await this.userRepository.findOne({where:{id:id}}  );
     user.password =password;
     return this.userRepository.save(user);
   }
-
- 
-
-
- 
-
 }

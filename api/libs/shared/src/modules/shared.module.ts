@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 
 import { SharedService } from '../service/shared.service';
+import { CheckMiddleware } from '../middleware/check.middleware';
 
 @Module({
   imports: [
@@ -38,11 +39,14 @@ export class SharedModule {
         inject: [ConfigService],
       },
     ];
+    exports: [CheckMiddleware];
 
     return {
       module: SharedModule,
       providers,
       exports: providers,
+    
+
     };
   }
 }

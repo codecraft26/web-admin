@@ -1,7 +1,9 @@
 
 import { Controller, Get, Inject ,Post,Req,UseInterceptors,Param,Body, Delete, UseGuards} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-
+import { AuthGuard } from '@app/shared/guards/auth.gaurd';
+import { UserInterceptor} from '@app/shared/interceptors/user.interceptor';
+import { RoleGaurd } from '@app/shared/guards/role.gaurd';
 @Controller()
 export class AppController {
   constructor(
@@ -61,7 +63,6 @@ export class AppController {
 
   async register(
     @Body('name') name: string,
-   
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
@@ -132,7 +133,6 @@ export class AppController {
       );
     }
 
-
     @Get('users/:email')
     async getUserByEmail(@Param('email') email: string) {
       return this.authService.send(
@@ -146,6 +146,9 @@ export class AppController {
 
 
     @Get('test/:email')
+    @UseGuards(AuthGuard, new RoleGaurd(['user']))
+
+    @UseInterceptors(UserInterceptor)
   
     async getTest1(@Param('email') email: string) {
       return this.authService.send(

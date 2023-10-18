@@ -4,25 +4,19 @@ export class RoleGaurd implements CanActivate{
         private rolePassed:String
 
 
-        constructor(role:string){
-            this.rolePassed=role
+        constructor(private readonly allowedRoles:String[]){
+            
         }
     canActivate(context: ExecutionContext)  {
 
-              
-        const ctx=context.switchToHttp();
-        const request:any=ctx.getRequest();
+       const {user}=context.switchToHttp().getRequest()
+       if(!user){
+              return false
 
-        const response:any=ctx.getResponse();
-        const user=request.user;
-        console.log(user)
-        console.log(response)
-      
-        console.log(this.rolePassed)
+       }
+       
+       return this.allowedRoles.includes(user.role)
 
-        return true;
-           
-        
 
         
     }
