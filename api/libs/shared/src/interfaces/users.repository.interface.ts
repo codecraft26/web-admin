@@ -6,6 +6,4 @@ export interface UsersRepositoryInterface {
     updateUser(id: number, user: User): Promise<User>;
     deleteUser(id: number): Promise<User>;
     findByEmail(email: string): Promise<User>;
-    
-  
   }

@@ -1,4 +1,5 @@
-import { Entity ,PrimaryGeneratedColumn,Column,ManyToMany,ManyToOne,JoinTable} from "typeorm";
+/* eslint-disable prettier/prettier */
+import { Entity,PrimaryGeneratedColumn,Column,ManyToMany,ManyToOne,JoinTable} from "typeorm";
 import { User} from "./user.entity";
 
 @Entity('Group')
