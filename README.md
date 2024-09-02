@@ -2,12 +2,5 @@
 
 
 - NestJs Microservice
-- RabbitMQ
-- Postgres
-
-
-
-## feature
-
 
 
